@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bouncing Circle Animation</title>
+  <title>Bouncing Circle with Dotted Text</title>
   <style>
     /* General Body Styling */
     body {
       margin: 0;
-      background: #232A32;
+      background-color: #232A32;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -27,7 +27,7 @@
     const canvas = document.getElementById("bouncingCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Set canvas size
+    // Canvas dimensions
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -36,22 +36,22 @@
       x: canvas.width / 2,
       y: canvas.height / 2,
       radius: 100,
-      dx: 4,
-      dy: 3,
+      dx: 3, // Horizontal speed
+      dy: 3, // Vertical speed
       color: "#6FCF97"
     };
 
     // Text properties
     const text = {
       content: "LINK",
-      font: "300px serif", // Replace with desired font
+      font: "300px serif", // Use your desired font-family
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
       y: canvas.height / 2
     };
 
-    // Restrict circle movement to text bounds
+    // Text boundary for circle movement
     const textBounds = {
       left: text.x - 300,
       right: text.x + 300,
@@ -66,46 +66,52 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Solid text
+      // Solid white text (outside circle)
       ctx.fillStyle = text.color;
       ctx.fillText(text.content, text.x, text.y);
 
-      // Dotted outline text
+      // Dotted outline for the text
+      ctx.setLineDash([5, 5]); // Dotted effect
       ctx.strokeStyle = text.outlineColor;
       ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // Create dotted effect
       ctx.strokeText(text.content, text.x, text.y);
+      ctx.setLineDash([]); // Reset dash settings
       ctx.restore();
     }
 
     // Draw the circle
     function drawCircle() {
       ctx.save();
-      ctx.beginPath();
-      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-      ctx.clip(); // Limit drawing inside the circle bounds
 
-      // Clear the area inside the circle to make text transparent
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw text with dotted outline inside circle
-      drawText();
-      ctx.restore();
-
-      // Draw the circle outline
+      // Draw circle outline
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.strokeStyle = circle.color;
       ctx.lineWidth = 4;
       ctx.stroke();
+
+      // Clip the area inside the circle
+      ctx.clip();
+
+      // Redraw text inside the circle
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear text inside circle
+      ctx.font = text.font;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.strokeStyle = text.outlineColor;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]); // Dotted outline inside circle
+      ctx.strokeText(text.content, text.x, text.y);
+
+      ctx.restore();
     }
 
-    // Update the circle position
+    // Update circle position
     function updateCircle() {
       circle.x += circle.dx;
       circle.y += circle.dy;
 
-      // Bounce off the text bounds
+      // Bounce the circle within text bounds
       if (circle.x - circle.radius < textBounds.left || circle.x + circle.radius > textBounds.right) {
         circle.dx *= -1;
       }
@@ -117,13 +123,13 @@
     // Animation loop
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-      drawCircle();
-      drawText();
-      updateCircle();
-      requestAnimationFrame(animate); // Repeat the animation
+      drawText(); // Draw full text
+      drawCircle(); // Draw circle with clipped text
+      updateCircle(); // Update circle position
+      requestAnimationFrame(animate); // Continue animation
     }
 
-    // Start the animation
+    // Start animation
     animate();
   </script>
 </body>
