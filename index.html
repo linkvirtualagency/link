@@ -36,8 +36,8 @@
       x: canvas.width / 2,
       y: canvas.height / 2,
       radius: 100,
-      dx: 3, // Horizontal speed
-      dy: 3, // Vertical speed
+      dx: 2, // Slower horizontal speed
+      dy: 1.5, // Slower vertical speed
       color: "#6FCF97"
     };
 
@@ -59,49 +59,50 @@
       bottom: text.y + 200
     };
 
-    // Draw the text
+    // Draw the full text (solid white outside circle)
     function drawText() {
       ctx.save();
       ctx.font = text.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
-      // Solid white text (outside circle)
+      // Solid white text
       ctx.fillStyle = text.color;
       ctx.fillText(text.content, text.x, text.y);
 
-      // Dotted outline for the text
-      ctx.setLineDash([5, 5]); // Dotted effect
-      ctx.strokeStyle = text.outlineColor;
-      ctx.lineWidth = 2;
-      ctx.strokeText(text.content, text.x, text.y);
-      ctx.setLineDash([]); // Reset dash settings
       ctx.restore();
     }
 
-    // Draw the circle
-    function drawCircle() {
+    // Draw the text inside the circle (dotted green outline)
+    function drawClippedText() {
       ctx.save();
 
-      // Draw circle outline
+      // Clip the area inside the circle
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-      ctx.strokeStyle = circle.color;
-      ctx.lineWidth = 4;
-      ctx.stroke();
-
-      // Clip the area inside the circle
       ctx.clip();
 
-      // Redraw text inside the circle
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear text inside circle
+      // Dotted outline text
       ctx.font = text.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.strokeStyle = text.outlineColor;
       ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // Dotted outline inside circle
+      ctx.setLineDash([5, 5]); // Dotted effect
       ctx.strokeText(text.content, text.x, text.y);
+
+      ctx.restore();
+    }
+
+    // Draw the circle outline
+    function drawCircle() {
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = circle.color;
+      ctx.lineWidth = 4;
+      ctx.stroke();
 
       ctx.restore();
     }
@@ -124,7 +125,8 @@
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
       drawText(); // Draw full text
-      drawCircle(); // Draw circle with clipped text
+      drawClippedText(); // Draw clipped text inside circle
+      drawCircle(); // Draw the circle
       updateCircle(); // Update circle position
       requestAnimationFrame(animate); // Continue animation
     }
