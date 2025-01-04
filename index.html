@@ -4,79 +4,108 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bouncing Circle Animation</title>
-
-  <!-- Google Font: The Seasons -->
-  <link href="https://fonts.googleapis.com/css2?family=The+Seasons:wght@400&display=swap" rel="stylesheet">
-
   <style>
     /* General Body Styling */
     body {
-      background: #232A32; /* Dark grayish blue background */
+      margin: 0;
+      background: #232A32;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-      overflow: hidden; /* Prevent scrollbars */
-      position: relative;
+      overflow: hidden;
     }
 
-    /* Text Styling */
-    .text {
-      position: relative;
-      font-size: 300px; /* Adjusted size */
-      font-family: 'The Seasons', serif; /* "The Seasons Regular" font */
-      color: white; /* Default text color outside the circle */
-      -webkit-text-fill-color: white; /* Solid white fill by default */
-      -webkit-text-stroke: 2px white; /* Solid white outline by default */
-      z-index: 1; /* Ensure text is above the background */
-    }
-
-    /* Circle Styling */
-    .circle {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border: 4px solid #6FCF97; /* Mint green outline */
-      border-radius: 50%;
-      z-index: 2;
-      animation: randomBounce 12s infinite linear; /* Continuous animation */
-      mask-image: radial-gradient(circle, black 45%, transparent 46%);
-      -webkit-mask-image: radial-gradient(circle, black 45%, transparent 46%);
-      mask-composite: exclude;
-      -webkit-mask-composite: exclude;
-    }
-
-    /* Dotted Outline Styling */
-    .text {
-      mix-blend-mode: normal;
-      -webkit-text-fill-color: white; /* White by default */
-      -webkit-text-stroke: 2px white; /* Solid white by default */
-    }
-
-    .circle + .text {
-      mix-blend-mode: difference; /* Changes the text inside the circle */
-      -webkit-text-stroke: 2px #6FCF97; /* Dotted mint green */
-      -webkit-text-stroke-dasharray: 4; /* Dotted effect */
-      -webkit-text-fill-color: transparent; /* Transparent inside circle */
-    }
-
-    /* Bouncing Animation (Covers All Letters) */
-    @keyframes randomBounce {
-      0% { transform: translate(-250px, -150px); }
-      20% { transform: translate(250px, -100px); }
-      40% { transform: translate(150px, 250px); }
-      60% { transform: translate(-150px, 250px); }
-      80% { transform: translate(-250px, -50px); }
-      100% { transform: translate(-250px, -150px); }
+    canvas {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <!-- The Text -->
-  <div class="text">LINK</div>
+  <canvas id="bouncingCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("bouncingCanvas");
+    const ctx = canvas.getContext("2d");
 
-  <!-- The Circle -->
-  <div class="circle"></div>
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Circle properties
+    const circle = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 75,
+      dx: 4, // Horizontal speed
+      dy: 3, // Vertical speed
+      color: "#6FCF97"
+    };
+
+    // Text properties
+    const text = {
+      content: "LINK",
+      font: "300px 'The Seasons', serif",
+      color: "white",
+      outlineColor: "#6FCF97",
+      x: canvas.width / 2,
+      y: canvas.height / 2 + 100 // Adjust for baseline
+    };
+
+    // Draw the text with dotted outline
+    function drawText() {
+      ctx.font = text.font;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // Solid text
+      ctx.fillStyle = text.color;
+      ctx.fillText(text.content, text.x, text.y);
+
+      // Dotted outline
+      ctx.strokeStyle = text.outlineColor;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]); // Dotted line
+      ctx.strokeText(text.content, text.x, text.y);
+      ctx.setLineDash([]); // Reset dash
+    }
+
+    // Draw the circle
+    function drawCircle() {
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = circle.color;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.clip(); // Clip text to circle bounds
+    }
+
+    // Update the circle's position
+    function updateCircle() {
+      circle.x += circle.dx;
+      circle.y += circle.dy;
+
+      // Bounce off walls
+      if (circle.x - circle.radius < 0 || circle.x + circle.radius > canvas.width) {
+        circle.dx *= -1;
+      }
+      if (circle.y - circle.radius < 0 || circle.y + circle.radius > canvas.height) {
+        circle.dy *= -1;
+      }
+    }
+
+    // Animation loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+      ctx.save();
+      drawCircle();
+      ctx.restore();
+      drawText();
+      updateCircle();
+      requestAnimationFrame(animate); // Loop animation
+    }
+
+    // Start the animation
+    animate();
+  </script>
 </body>
 </html>
