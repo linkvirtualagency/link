@@ -24,12 +24,12 @@
     /* Text Styling */
     .text {
       position: relative;
-      font-size: 300px; /* Adjusted size */
+      font-size: 300px; /* Text size */
       font-family: 'The Seasons', serif; /* "The Seasons Regular" font */
       color: white; /* Default text color outside the circle */
       -webkit-text-fill-color: white; /* Solid white fill by default */
       -webkit-text-stroke: 2px white; /* Solid white outline by default */
-      z-index: 1; /* Keep the text above the background */
+      z-index: 1; /* Ensure text is above the background */
     }
 
     /* Circle Styling */
@@ -40,25 +40,38 @@
       border: 4px solid #6FCF97; /* Mint green outline */
       border-radius: 50%;
       z-index: 2;
-      mix-blend-mode: difference; /* Allow interaction with text */
-      animation: randomBounce 12s infinite ease-in-out; /* Slower animation */
+      animation: randomBounce 10s infinite ease-in-out;
     }
 
-    /* Highlight Text Inside Circle */
-    .circle:hover + .text {
-      -webkit-text-stroke: 2px #6FCF97; /* Mint green dotted outline */
-      -webkit-text-stroke-dasharray: 4; /* Dotted effect */
-      -webkit-text-fill-color: transparent; /* Transparent fill inside letters */
+    /* Text Highlight Inside Circle */
+    .circle::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      mask-image: radial-gradient(circle, transparent 30%, black 31%);
+      mask-composite: exclude;
+      -webkit-mask-image: radial-gradient(circle, transparent 30%, black 31%);
+      -webkit-mask-composite: exclude;
     }
 
-    /* Random Bouncing Animation (Tight Bounds) */
+    .circle + .text {
+      mix-blend-mode: difference;
+      -webkit-text-stroke: 2px #6FCF97; /* Dotted mint-green outline */
+      -webkit-text-stroke-dasharray: 5; /* Dotted effect */
+      -webkit-text-fill-color: transparent; /* Transparent fill inside circle */
+    }
+
+    /* Random Bouncing Animation */
     @keyframes randomBounce {
-      0% { transform: translate(0px, 0px); }
-      20% { transform: translate(50px, -50px); }
-      40% { transform: translate(-50px, 50px); }
-      60% { transform: translate(100px, -100px); }
-      80% { transform: translate(-100px, 100px); }
-      100% { transform: translate(0px, 0px); }
+      0% { transform: translate(-100px, -100px); }
+      25% { transform: translate(100px, -50px); }
+      50% { transform: translate(-50px, 100px); }
+      75% { transform: translate(50px, -100px); }
+      100% { transform: translate(-100px, 100px); }
     }
   </style>
 </head>
