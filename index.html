@@ -40,38 +40,35 @@
       border: 4px solid #6FCF97; /* Mint green outline */
       border-radius: 50%;
       z-index: 2;
-      mix-blend-mode: difference; /* Allow interaction with text */
       animation: randomBounce 12s infinite linear; /* Continuous animation */
+      mask-image: radial-gradient(circle, black 45%, transparent 46%);
+      -webkit-mask-image: radial-gradient(circle, black 45%, transparent 46%);
+      mask-composite: exclude;
+      -webkit-mask-composite: exclude;
     }
 
-    /* Dotted Outline Effect */
-    .text::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      -webkit-mask-image: radial-gradient(circle, transparent 50%, black 51%);
-      -webkit-mask-composite: exclude;
-      mask-image: radial-gradient(circle, transparent 50%, black 51%);
-      mask-composite: exclude;
+    /* Dotted Outline Styling */
+    .text {
+      mix-blend-mode: normal;
+      -webkit-text-fill-color: white; /* White by default */
+      -webkit-text-stroke: 2px white; /* Solid white by default */
     }
 
     .circle + .text {
-      mix-blend-mode: difference;
-      -webkit-text-stroke: 2px #6FCF97; /* Mint green dotted outline */
-      -webkit-text-stroke-dasharray: 5; /* Dotted effect */
-      -webkit-text-fill-color: transparent; /* Transparent fill inside circle */
+      mix-blend-mode: difference; /* Changes the text inside the circle */
+      -webkit-text-stroke: 2px #6FCF97; /* Dotted mint green */
+      -webkit-text-stroke-dasharray: 4; /* Dotted effect */
+      -webkit-text-fill-color: transparent; /* Transparent inside circle */
     }
 
-    /* Random Bouncing Animation (Covering All Letters) */
+    /* Bouncing Animation (Covers All Letters) */
     @keyframes randomBounce {
-      0% { transform: translate(-200px, -100px); }
-      25% { transform: translate(150px, -200px); }
-      50% { transform: translate(200px, 150px); }
-      75% { transform: translate(-150px, 200px); }
-      100% { transform: translate(-200px, -100px); }
+      0% { transform: translate(-250px, -150px); }
+      20% { transform: translate(250px, -100px); }
+      40% { transform: translate(150px, 250px); }
+      60% { transform: translate(-150px, 250px); }
+      80% { transform: translate(-250px, -50px); }
+      100% { transform: translate(-250px, -150px); }
     }
   </style>
 </head>
