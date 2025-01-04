@@ -36,8 +36,8 @@
       x: canvas.width / 2,
       y: canvas.height / 2,
       radius: 100,
-      dx: 2, // Slower horizontal speed
-      dy: 1.5, // Slower vertical speed
+      dx: 1.5, // Further reduced speed for smoother motion
+      dy: 1, // Slower vertical speed
       color: "#6FCF97"
     };
 
@@ -59,7 +59,7 @@
       bottom: text.y + 200
     };
 
-    // Draw the full text (solid white outside circle)
+    // Draw the full text (solid white globally)
     function drawText() {
       ctx.save();
       ctx.font = text.font;
@@ -82,7 +82,10 @@
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.clip();
 
-      // Dotted outline text
+      // Clear the clipped area
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dotted outline text inside circle
       ctx.font = text.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
