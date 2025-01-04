@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Circle Animation</title>
+
+  <!-- Google Font: The Seasons -->
+  <link href="https://fonts.googleapis.com/css2?family=The+Seasons:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    /* General Body Styling */
+    body {
+      background: #232A32; /* Dark grayish blue background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* Prevent scrollbars */
+      position: relative;
+    }
+
+    /* Text Styling */
+    .text {
+      position: relative;
+      font-size: 300px; /* Increased size */
+      font-family: 'The Seasons', serif; /* "The Seasons Regular" font */
+      color: white; /* Default text color outside the circle */
+      z-index: 1; /* Keep the text above the circle */
+      -webkit-text-stroke: 3px transparent; /* No outline by default */
+    }
+
+    /* Circle Styling */
+    .circle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border: 4px solid #6FCF97; /* Mint green outline */
+      border-radius: 50%;
+      z-index: 2;
+      mix-blend-mode: difference; /* Show interaction with text */
+      animation: randomBounce 10s infinite ease-in-out;
+    }
+
+    /* Highlight Text Inside Circle */
+    .circle + .text {
+      mix-blend-mode: difference;
+      -webkit-text-stroke: 2px #6FCF97; /* Dashed mint green outline */
+      -webkit-text-stroke-dasharray: 4; /* Dashed effect */
+      -webkit-text-fill-color: transparent; /* No fill inside letters */
+    }
+
+    /* Random Bouncing Animation */
+    @keyframes randomBounce {
+      0% { transform: translate(-200px, -200px); }
+      20% { transform: translate(150px, -250px); }
+      40% { transform: translate(200px, 200px); }
+      60% { transform: translate(-250px, 250px); }
+      80% { transform: translate(250px, -200px); }
+      100% { transform: translate(-200px, -200px); }
+    }
+  </style>
+</head>
+<body>
+  <!-- The Text -->
+  <div class="text">LINK</div>
+
+  <!-- The Circle -->
+  <div class="circle"></div>
+</body>
+</html>
