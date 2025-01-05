@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coming Soon (Mobile Optimized)</title>
+  <title>Coming Soon (Embed-Specific)</title>
   <style>
     /* General Body Styling */
     body {
@@ -27,42 +27,29 @@
     const canvas = document.getElementById("bouncingCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Function to resize canvas dynamically for mobile
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    // Set canvas dimensions explicitly for the embed
+    canvas.width = 280;
+    canvas.height = 162;
 
-    // Initial canvas size setup
-    resizeCanvas();
-
-    // Circle properties (unchanged)
+    // Circle properties (proportional to the embed size)
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: Math.min(canvas.width, canvas.height) * 0.12, // Circle size remains consistent
+      radius: 30, // Larger radius to fill space better
       dx: 1.2, // Horizontal speed
       dy: 1.2, // Vertical speed
       color: "#6FCF97"
     };
 
-    // Text properties (reduced size for visibility)
+    // Text properties (increased size for better visibility)
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: Math.min(canvas.width, canvas.height) * 0.1, // Reduced font size for proper fit
+      fontSize: 50, // Increased font size to fill space
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
       y: canvas.height / 2
     };
-
-    // Function to dynamically update text and circle properties
-    function updateProperties() {
-      text.fontSize = Math.min(canvas.width, canvas.height) * 0.1; // Adjust font size dynamically
-      text.x = canvas.width / 2;
-      text.y = canvas.height / 2;
-      circle.radius = Math.min(canvas.width, canvas.height) * 0.12; // Circle size stays constant
-    }
 
     // Draw the full text (solid white globally)
     function drawText() {
@@ -97,8 +84,8 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.strokeStyle = text.outlineColor;
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]); // Dotted effect
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]); // Dotted effect
 
       text.content.forEach((line, index) => {
         ctx.strokeText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
@@ -114,7 +101,7 @@
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.strokeStyle = circle.color;
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
       ctx.restore();
@@ -144,14 +131,9 @@
       requestAnimationFrame(animate); // Continue animation
     }
 
-    // Resize listener for responsive canvas
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      updateProperties();
-    });
-
     // Start animation
     animate();
   </script>
 </body>
 </html>
+
