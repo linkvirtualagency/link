@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coming Soon (Forced Size)</title>
+  <title>Coming Soon (Mobile Optimized)</title>
   <style>
     /* General Body Styling */
     body {
@@ -18,8 +18,6 @@
 
     canvas {
       display: block;
-      width: 100%;
-      height: 100%;
     }
   </style>
 </head>
@@ -29,46 +27,47 @@
     const canvas = document.getElementById("bouncingCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Function to resize canvas dynamically
+    // Function to resize canvas dynamically for mobile
     function resizeCanvas() {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
 
     // Initial canvas size setup
     resizeCanvas();
 
-    // Circle properties
+    // Circle properties optimized for mobile
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: Math.min(canvas.width, canvas.height) * 0.12, // Adjust radius for larger text
-      dx: 1.5, // Horizontal speed
+      radius: Math.min(canvas.width, canvas.height) * 0.12, // Proportional radius
+      dx: 1.2, // Horizontal speed
       dy: 1.2, // Vertical speed
       color: "#6FCF97"
     };
 
-    // Text properties
+    // Text properties optimized for mobile
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: 150, // Force a large fixed font size
+      fontSize: Math.min(canvas.width, canvas.height) * 0.18, // Proportional font size
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
       y: canvas.height / 2
     };
 
-    // Function to update text properties dynamically
-    function updateTextProperties() {
+    // Function to dynamically update text and circle properties
+    function updateProperties() {
+      text.fontSize = Math.min(canvas.width, canvas.height) * 0.18; // Adjust font size
       text.x = canvas.width / 2;
       text.y = canvas.height / 2;
-      circle.radius = Math.min(canvas.width, canvas.height) * 0.12;
+      circle.radius = Math.min(canvas.width, canvas.height) * 0.12; // Adjust radius
     }
 
     // Draw the full text (solid white globally)
     function drawText() {
       ctx.save();
-      ctx.font = `${text.fontSize}px serif`; // Use fixed font size
+      ctx.font = `${text.fontSize}px serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
@@ -99,7 +98,7 @@
       ctx.textBaseline = "middle";
       ctx.strokeStyle = text.outlineColor;
       ctx.lineWidth = 2;
-      ctx.setLineDash([3, 3]); // Dotted effect
+      ctx.setLineDash([5, 5]); // Dotted effect
 
       text.content.forEach((line, index) => {
         ctx.strokeText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
@@ -121,7 +120,7 @@
       ctx.restore();
     }
 
-    // Update circle position
+    // Update circle position for bouncing animation
     function updateCircle() {
       circle.x += circle.dx;
       circle.y += circle.dy;
@@ -145,10 +144,10 @@
       requestAnimationFrame(animate); // Continue animation
     }
 
-    // Resize listener
+    // Resize listener for responsive canvas
     window.addEventListener("resize", () => {
       resizeCanvas();
-      updateTextProperties();
+      updateProperties();
     });
 
     // Start animation
