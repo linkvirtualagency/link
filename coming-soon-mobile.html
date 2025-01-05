@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coming Soon (Embed-Specific)</title>
+  <title>Coming Soon (Mobile Optimized)</title>
   <style>
     /* General Body Styling */
     body {
@@ -31,20 +31,20 @@
     canvas.width = 280;
     canvas.height = 162;
 
-    // Circle properties (proportional to the embed size)
+    // Circle properties (optimized size for animation)
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: 30, // Larger radius to fill space better
+      radius: 25, // Adjusted to keep the animation balanced
       dx: 1.2, // Horizontal speed
       dy: 1.2, // Vertical speed
       color: "#6FCF97"
     };
 
-    // Text properties (increased size for better visibility)
+    // Text properties (significantly increased size)
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: 50, // Increased font size to fill space
+      fontSize: 70, // Large enough to fit the canvas properly
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
@@ -61,7 +61,7 @@
       // Draw each line of text
       text.content.forEach((line, index) => {
         ctx.fillStyle = text.color;
-        ctx.fillText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
+        ctx.fillText(line, text.x, text.y + index * text.fontSize * 0.9 - text.fontSize / 2); // Adjust line spacing
       });
 
       ctx.restore();
@@ -88,7 +88,7 @@
       ctx.setLineDash([4, 4]); // Dotted effect
 
       text.content.forEach((line, index) => {
-        ctx.strokeText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
+        ctx.strokeText(line, text.x, text.y + index * text.fontSize * 0.9 - text.fontSize / 2); // Adjust line spacing
       });
 
       ctx.restore();
@@ -101,7 +101,7 @@
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.strokeStyle = circle.color;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.restore();
@@ -136,4 +136,3 @@
   </script>
 </body>
 </html>
-
