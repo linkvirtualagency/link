@@ -36,20 +36,20 @@
     // Initial canvas size setup
     resizeCanvas();
 
-    // Circle properties optimized for mobile
+    // Circle properties (unchanged)
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: Math.min(canvas.width, canvas.height) * 0.12, // Proportional radius
+      radius: Math.min(canvas.width, canvas.height) * 0.12, // Circle size remains consistent
       dx: 1.2, // Horizontal speed
       dy: 1.2, // Vertical speed
       color: "#6FCF97"
     };
 
-    // Text properties optimized for mobile
+    // Text properties (reduced size for visibility)
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: Math.min(canvas.width, canvas.height) * 0.18, // Proportional font size
+      fontSize: Math.min(canvas.width, canvas.height) * 0.1, // Reduced font size for proper fit
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
@@ -58,10 +58,10 @@
 
     // Function to dynamically update text and circle properties
     function updateProperties() {
-      text.fontSize = Math.min(canvas.width, canvas.height) * 0.18; // Adjust font size
+      text.fontSize = Math.min(canvas.width, canvas.height) * 0.1; // Adjust font size dynamically
       text.x = canvas.width / 2;
       text.y = canvas.height / 2;
-      circle.radius = Math.min(canvas.width, canvas.height) * 0.12; // Adjust radius
+      circle.radius = Math.min(canvas.width, canvas.height) * 0.12; // Circle size stays constant
     }
 
     // Draw the full text (solid white globally)
