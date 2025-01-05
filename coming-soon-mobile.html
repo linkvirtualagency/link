@@ -35,16 +35,16 @@
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: 40, // Further reduced radius for mobile
-      dx: 1.2, // Slower speed for mobile
-      dy: 1,
+      radius: 40, // Circle radius for mobile
+      dx: 1.2, // Horizontal speed
+      dy: 1, // Vertical speed
       color: "#6FCF97"
     };
 
     // Text properties
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      font: "60px serif", // Further reduced font size for mobile
+      font: "36px serif", // Reduced font size (40% smaller)
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
@@ -53,10 +53,10 @@
 
     // Text boundary for circle movement
     const textBounds = {
-      left: text.x - 150,
-      right: text.x + 150,
-      top: text.y - 100,
-      bottom: text.y + 100
+      left: text.x - 100,
+      right: text.x + 100,
+      top: text.y - 80,
+      bottom: text.y + 80
     };
 
     // Draw the full text (solid white globally)
@@ -69,7 +69,7 @@
       // Draw each line of text
       text.content.forEach((line, index) => {
         ctx.fillStyle = text.color;
-        ctx.fillText(line, text.x, text.y + index * 80 - 40); // Adjust line spacing
+        ctx.fillText(line, text.x, text.y + index * 50 - 25); // Adjust line spacing
       });
 
       ctx.restore();
@@ -96,7 +96,7 @@
       ctx.setLineDash([3, 3]); // Dotted effect
 
       text.content.forEach((line, index) => {
-        ctx.strokeText(line, text.x, text.y + index * 80 - 40); // Adjust line spacing
+        ctx.strokeText(line, text.x, text.y + index * 50 - 25); // Adjust line spacing
       });
 
       ctx.restore();
