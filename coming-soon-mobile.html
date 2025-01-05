@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon (Mobile)</title>
+  <style>
+    /* General Body Styling */
+    body {
+      margin: 0;
+      background-color: #232A32;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bouncingCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById("bouncingCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Set canvas size based on device dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Circle properties
+    const circle = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 60, // Smaller radius for mobile
+      dx: 1.5, // Slower speed for mobile
+      dy: 1,
+      color: "#6FCF97"
+    };
+
+    // Text properties
+    const text = {
+      content: ["COMING", "SOON"], // Multi-line text
+      font: "100px serif", // Smaller font size for mobile
+      color: "white",
+      outlineColor: "#6FCF97",
+      x: canvas.width / 2,
+      y: canvas.height / 2
+    };
+
+    // Text boundary for circle movement
+    const textBounds = {
+      left: text.x - 200,
+      right: text.x + 200,
+      top: text.y - 150,
+      bottom: text.y + 150
+    };
+
+    // Draw the full text (solid white globally)
+    function drawText() {
+      ctx.save();
+      ctx.font = text.font;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // Draw each line of text
+      text.content.forEach((line, index) => {
+        ctx.fillStyle = text.color;
+        ctx.fillText(line, text.x, text.y + index * 130 - 65); // Adjust line spacing
+      });
+
+      ctx.restore();
+    }
+
+    // Draw the text inside the circle (dotted green outline)
+    function drawClippedText() {
+      ctx.save();
+
+      // Clip the area inside the circle
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Clear the clipped area
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Dotted outline text inside circle
+      ctx.font = text.font;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.strokeStyle = text.outlineColor;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]); // Dotted effect
+
+      text.content.forEach((line, index) => {
+        ctx.strokeText(line, text.x, text.y + index * 130 - 65); // Adjust line spacing
+      });
+
+      ctx.restore();
+    }
+
+    // Draw the circle outline
+    function drawCircle() {
+      ctx.save();
+
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = circle.color;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Update circle position
+    function updateCircle() {
+      circle.x += circle.dx;
+      circle.y += circle.dy;
+
+      // Bounce the circle within text bounds
+      if (circle.x - circle.radius < textBounds.left || circle.x + circle.radius > textBounds.right) {
+        circle.dx *= -1;
+      }
+      if (circle.y - circle.radius < textBounds.top || circle.y + circle.radius > textBounds.bottom) {
+        circle.dy *= -1;
+      }
+    }
+
+    // Animation loop
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+      drawText(); // Draw full text
+      drawClippedText(); // Draw clipped text inside circle
+      drawCircle(); // Draw the circle
+      updateCircle(); // Update circle position
+      requestAnimationFrame(animate); // Continue animation
+    }
+
+    // Start animation
+    animate();
+  </script>
+</body>
+</html>
