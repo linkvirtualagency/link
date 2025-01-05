@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coming Soon (Embed-Friendly)</title>
+  <title>Coming Soon (Mobile)</title>
   <style>
     /* General Body Styling */
     body {
@@ -12,14 +12,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100%;
+      height: 100vh;
       overflow: hidden;
     }
 
     canvas {
       display: block;
-      width: 100%;
-      height: 100%;
     }
   </style>
 </head>
@@ -29,54 +27,52 @@
     const canvas = document.getElementById("bouncingCanvas");
     const ctx = canvas.getContext("2d");
 
-    // Function to resize canvas dynamically
-    function resizeCanvas() {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    }
+    // Set canvas size based on device dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    // Initial canvas size setup
-    resizeCanvas();
+    // Responsive scaling factors
+    const scalingFactor = canvas.width < 600 ? 0.4 : 1; // Scale down for screens less than 600px
 
     // Circle properties
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: Math.min(canvas.width, canvas.height) * 0.1, // Adjust radius based on canvas size
-      dx: 1.2, // Horizontal speed
-      dy: 1, // Vertical speed
+      radius: 40 * scalingFactor, // Adjust radius for smaller screens
+      dx: 1.2 * scalingFactor, // Adjust speed for scaling
+      dy: 1 * scalingFactor,
       color: "#6FCF97"
     };
 
     // Text properties
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: Math.min(canvas.width, canvas.height) * 0.08, // Scale font size dynamically
+      font: `${36 * scalingFactor}px serif`, // Adjust font size dynamically
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
       y: canvas.height / 2
     };
 
-    // Function to update text and bounds dynamically
-    function updateTextProperties() {
-      text.fontSize = Math.min(canvas.width, canvas.height) * 0.08;
-      text.x = canvas.width / 2;
-      text.y = canvas.height / 2;
-      circle.radius = Math.min(canvas.width, canvas.height) * 0.1;
-    }
+    // Text boundary for circle movement
+    const textBounds = {
+      left: text.x - 100 * scalingFactor,
+      right: text.x + 100 * scalingFactor,
+      top: text.y - 80 * scalingFactor,
+      bottom: text.y + 80 * scalingFactor
+    };
 
     // Draw the full text (solid white globally)
     function drawText() {
       ctx.save();
-      ctx.font = `${text.fontSize}px serif`;
+      ctx.font = text.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 
       // Draw each line of text
       text.content.forEach((line, index) => {
         ctx.fillStyle = text.color;
-        ctx.fillText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
+        ctx.fillText(line, text.x, text.y + index * 50 * scalingFactor - 25 * scalingFactor); // Adjust line spacing
       });
 
       ctx.restore();
@@ -95,7 +91,7 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Dotted outline text inside circle
-      ctx.font = `${text.fontSize}px serif`;
+      ctx.font = text.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.strokeStyle = text.outlineColor;
@@ -103,7 +99,7 @@
       ctx.setLineDash([3, 3]); // Dotted effect
 
       text.content.forEach((line, index) => {
-        ctx.strokeText(line, text.x, text.y + index * text.fontSize * 1.2 - text.fontSize / 2); // Adjust line spacing
+        ctx.strokeText(line, text.x, text.y + index * 50 * scalingFactor - 25 * scalingFactor); // Adjust line spacing
       });
 
       ctx.restore();
@@ -116,7 +112,7 @@
       ctx.beginPath();
       ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
       ctx.strokeStyle = circle.color;
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 4 * scalingFactor;
       ctx.stroke();
 
       ctx.restore();
@@ -127,11 +123,11 @@
       circle.x += circle.dx;
       circle.y += circle.dy;
 
-      // Bounce the circle within canvas bounds
-      if (circle.x - circle.radius < 0 || circle.x + circle.radius > canvas.width) {
+      // Bounce the circle within text bounds
+      if (circle.x - circle.radius < textBounds.left || circle.x + circle.radius > textBounds.right) {
         circle.dx *= -1;
       }
-      if (circle.y - circle.radius < 0 || circle.y + circle.radius > canvas.height) {
+      if (circle.y - circle.radius < textBounds.top || circle.y + circle.radius > textBounds.bottom) {
         circle.dy *= -1;
       }
     }
@@ -145,12 +141,6 @@
       updateCircle(); // Update circle position
       requestAnimationFrame(animate); // Continue animation
     }
-
-    // Resize listener
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      updateTextProperties();
-    });
 
     // Start animation
     animate();
