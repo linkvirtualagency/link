@@ -42,16 +42,16 @@
     const circle = {
       x: canvas.width / 2,
       y: canvas.height / 2,
-      radius: Math.min(canvas.width, canvas.height) * 0.1, // Adjust radius based on canvas size
-      dx: 1.2, // Horizontal speed
-      dy: 1, // Vertical speed
+      radius: Math.min(canvas.width, canvas.height) * 0.15, // Adjust radius for larger text
+      dx: 1.5, // Horizontal speed
+      dy: 1.2, // Vertical speed
       color: "#6FCF97"
     };
 
     // Text properties
     const text = {
       content: ["COMING", "SOON"], // Multi-line text
-      fontSize: Math.min(canvas.width, canvas.height) * 0.15, // Increased font size for visibility
+      fontSize: Math.min(canvas.width, canvas.height) * 0.25, // Increased font size for visibility
       color: "white",
       outlineColor: "#6FCF97",
       x: canvas.width / 2,
@@ -60,10 +60,10 @@
 
     // Function to update text and bounds dynamically
     function updateTextProperties() {
-      text.fontSize = Math.min(canvas.width, canvas.height) * 0.15; // Increased size
+      text.fontSize = Math.min(canvas.width, canvas.height) * 0.25; // Larger size
       text.x = canvas.width / 2;
       text.y = canvas.height / 2;
-      circle.radius = Math.min(canvas.width, canvas.height) * 0.1;
+      circle.radius = Math.min(canvas.width, canvas.height) * 0.15;
     }
 
     // Draw the full text (solid white globally)
